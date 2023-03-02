@@ -1,0 +1,100 @@
+{
+  "name": "swotcode-indexer",
+  "displayName": "swotcode-indexer",
+  "description": "",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+			"activitybar": [
+				{
+					"id": "package-explorer",
+					"title": "SwotCode Indexer",
+					"icon": "media/magic-wand.svg"
+				}
+			]
+		},
+    "views": {
+			"package-explorer": [
+				{
+					"id": "mySymbolView",
+					"name": "Symbols",
+					"contextualTitle": "SwotCode Indexer"
+				},
+        {
+          "id": "myReferenceView",
+          "name": "References",
+          "contextualTitle": "SwotCode Indexer"
+        }
+			]
+		},
+    "commands": [
+      {
+				"command": "myExtension.refreshTree",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+      {
+				"command": "myExtension.regenGtags",
+				"title": "Generate Gtags"
+      },
+      {
+				"command": "myExtension.syncWithEditor",
+				"title": "Toggle: Sync with editor"
+      },
+      {
+				"command": "swotcodeIndexer.getInput",
+				"title": "SwotCode Indexer: Find Symbol"
+			}
+    ],
+    "menus": {
+			"view/title": [
+				{
+					"command": "myExtension.refreshTree",
+					"group": "navigation",
+          "when": "view == mySymbolView || view == myReferenceView"
+				},
+        {
+          "command": "myExtension.regenGtags",
+          "when": "view == mySymbolView || view == myReferenceView"
+        },
+        {
+          "command": "myExtension.syncWithEditor",
+          "when": "view == mySymbolView || view == myReferenceView"
+        }
+      ]
+    }
+},
+
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5",
+    "@vscode/test-electron": "^2.2.3"
+  }
+}
