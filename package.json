@@ -33,6 +33,12 @@
           "name": "References",
           "contextualTitle": "SwotCode Indexer"
         }
+        ,
+        {
+          "id": "myExtReferenceView",
+          "name": "Extended References",
+          "contextualTitle": "SwotCode Indexer"
+        }
 			]
 		},
     "commands": [
@@ -53,8 +59,12 @@
 				"title": "Toggle: Sync with editor"
       },
       {
-				"command": "swotcodeIndexer.getInput",
+				"command": "myExtension.getInput",
 				"title": "SwotCode Indexer: Find Symbol"
+			},
+      {
+				"command": "myExtension.getInputWithList",
+				"title": "SwotCode Indexer: Find Symbol From List"
 			}
     ],
     "menus": {
@@ -62,15 +72,25 @@
 				{
 					"command": "myExtension.refreshTree",
 					"group": "navigation",
-          "when": "view == mySymbolView || view == myReferenceView"
+          "when": "view == mySymbolView || view == myReferenceView || view == myExtReferenceView"
 				},
         {
+          "command": "myExtension.getInput",
+          "group": "navi",
+          "when": "view == mySymbolView || view == myReferenceView || view == myExtReferenceView"
+        },
+        {
+          "command": "myExtension.getInputWithList",
+          "group": "navi",
+          "when": "view == mySymbolView || view == myReferenceView || view == myExtReferenceView"
+        },
+        {
           "command": "myExtension.regenGtags",
-          "when": "view == mySymbolView || view == myReferenceView"
+          "when": "view == mySymbolView || view == myReferenceView || view == myExtReferenceView"
         },
         {
           "command": "myExtension.syncWithEditor",
-          "when": "view == mySymbolView || view == myReferenceView"
+          "when": "view == mySymbolView || view == myReferenceView || view == myExtReferenceView"
         }
       ]
     }

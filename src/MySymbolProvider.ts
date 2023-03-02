@@ -1,11 +1,13 @@
 import { exec, execSync, spawn } from 'child_process';
 import * as vscode from 'vscode';
+import { logChannel } from "./extension";
 
 interface Entry {
     uri: string;
     lineNumber: number;
 	type: vscode.FileType;
 }
+
 let value: string = "";
 // Get the first workspace folder
 const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
@@ -43,23 +45,28 @@ export class MyReferenceProvider implements vscode.TreeDataProvider<Entry> {
     // Define the `refresh` method to trigger a refresh of the tree view.
     refresh(input: string): void {
         value = input;
-        console.log("ref2 ", getWordAtCursor());
         this._onDidChangeTreeData.fire(undefined);
     }
 
     regenGtags(): void {
-        
+
+        vscode.window.showInformationMessage("GTAGS is generating please wait.");
+
+        logChannel(`Command: Generate GTAGS --> cd ${workspaceFolderPath} && gtags`);
+
         exec(`cd ${workspaceFolderPath} && gtags`, (error, stdout, stderr) => {
             if (error) {
-              console.error(`Error executing command: ${error}`);
-              return;
+                vscode.window.showInformationMessage(`Error executing command: ${error}`);
+                logChannel(`Error executing command: ${error}`);
+                return;
             }
             vscode.window.showInformationMessage("GTAGS successfully generated.");
+            logChannel(`GTAGS successfully generated.`);
           });
     }
 }
 
-function getWordAtCursor() {
+export function getWordAtCursor() {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
       const document = editor.document;
@@ -98,8 +105,8 @@ function runCommandAndReturnEntryList(value: string, command: string, element?: 
 
     if (word)
     {
-        console.log(`The word at cursor: ${word}`);
-
+        logChannel(`Command: Run -> cd ${workspaceFolderPath} && ${command} ${word}`);
+        
         const out = execSync(`cd ${workspaceFolderPath} && ${command} ${word}`).toString();
 
         const lines = out.split('\n');
